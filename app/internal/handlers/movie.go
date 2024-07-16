@@ -3,8 +3,8 @@ package handlers
 import (
     "encoding/json"
     "net/http"
+    "github.com/vinnieoh/golang-my-favorite-movies/app/internal/services"
     "github.com/gorilla/mux"
-
 )
 
 func GetMoviesHandler(w http.ResponseWriter, r *http.Request) {

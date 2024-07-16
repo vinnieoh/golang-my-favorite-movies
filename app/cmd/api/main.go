@@ -11,8 +11,9 @@ func main() {
     cfg := config.LoadConfig()
     router := handlers.SetupRouter()
 
-    log.Printf("Server is listening on port %s...", cfg.Server.Port)
-    if err := http.ListenAndServe(cfg.Server.Port, router); err != nil {
+    port := ":" + cfg.Server.Port
+    log.Printf("Server is listening on port %s...", port)
+    if err := http.ListenAndServe(port, router); err != nil {
         log.Fatalf("Could not start server: %s\n", err.Error())
     }
 }
