@@ -1,0 +1,20 @@
+CREATE TABLE tv_shows (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    original_id INTEGER UNIQUE NOT NULL,
+    original_language VARCHAR(255),
+    overview TEXT,
+    popularity FLOAT,
+    vote_average FLOAT,
+    vote_count INTEGER,
+    genre_ids TEXT,
+    backdrop_path VARCHAR(255),
+    poster_path VARCHAR(255),
+    is_adult BOOLEAN DEFAULT FALSE,
+    name VARCHAR(255) NOT NULL,
+    original_name VARCHAR(255),
+    first_air_date DATE,
+    origin_country VARCHAR(255),
+    user_id UUID REFERENCES users(id),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);

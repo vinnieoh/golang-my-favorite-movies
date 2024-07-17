@@ -1,0 +1,20 @@
+CREATE TABLE movies (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    original_id INTEGER UNIQUE NOT NULL,
+    original_language VARCHAR(255),
+    overview TEXT,
+    popularity FLOAT,
+    vote_average FLOAT,
+    vote_count INTEGER,
+    genre_ids TEXT,
+    backdrop_path VARCHAR(255),
+    poster_path VARCHAR(255),
+    is_adult BOOLEAN DEFAULT FALSE,
+    title VARCHAR(255) NOT NULL,
+    original_title VARCHAR(255),
+    release_date DATE,
+    video BOOLEAN DEFAULT FALSE,
+    user_id UUID REFERENCES users(id),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
