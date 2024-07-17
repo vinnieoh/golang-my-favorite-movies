@@ -54,3 +54,15 @@ func (r *UserRepository) EmailExists(email string) bool {
     err := r.DB.Where("email = ?", email).First(&user).Error
     return err == nil
 }
+
+func (r *UserRepository) FindByUsernameOrEmail(identifier string) (*models.User, error) {
+	var user models.User
+	err := r.DB.Where("username = ? OR email = ?", identifier, identifier).First(&user).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &user, nil
+}

@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
@@ -23,6 +24,11 @@ func main() {
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
+	}
+
+	// Defina a variável de ambiente JWT_SECRET
+	if os.Getenv("JWT_SECRET") == "" {
+		log.Fatal("JWT_SECRET environment variable is required")
 	}
 
 	// Auto-migrate the models

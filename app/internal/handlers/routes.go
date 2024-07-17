@@ -15,6 +15,9 @@ func RegisterRoutes(router *gin.Engine, userService *services.UserService) {
 		v1.PUT("/users/:id", userHandler.UpdateUser)
 		v1.DELETE("/users/:id", userHandler.DeleteUser)
 
+        // Endpoint de login
+		v1.POST("/login", userHandler.Login)
+
 		// movieHandler := NewMovieHandler(movieService)
 		// v1.GET("/movies", movieHandler.GetMovies)
 		// v1.GET("/movies/:id", movieHandler.GetMovie)

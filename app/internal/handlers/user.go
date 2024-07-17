@@ -85,3 +85,23 @@ func (h *UserHandler) DeleteUser(c *gin.Context) {
 	}
 	c.JSON(http.StatusNoContent, nil)
 }
+
+func (h *UserHandler) Login(c *gin.Context) {
+	var credentials struct {
+		Identifier string `json:"identifier" binding:"required"`
+		Password   string `json:"password" binding:"required"`
+	}
+
+	if err := c.ShouldBindJSON(&credentials); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	token, err := h.UserService.Authenticate(credentials.Identifier, credentials.Password)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"token": token})
+}

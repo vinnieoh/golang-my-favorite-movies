@@ -2,23 +2,31 @@ package services
 
 import (
 	"errors"
+	"os"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/vinnieoh/golang-my-favorite-movies/app/internal/models"
 	"github.com/vinnieoh/golang-my-favorite-movies/app/internal/repositories"
 )
 
 var (
-	ErrUsernameExists = errors.New("username already exists")
-	ErrEmailExists    = errors.New("email already exists")
+	ErrInvalidCredentials = errors.New("invalid username or password")
+	ErrUsernameExists     = errors.New("username already exists")
+	ErrEmailExists        = errors.New("email already exists")
 )
 
 type UserService struct {
 	UserRepository *repositories.UserRepository
+	jwtSecret      string
 }
 
 func NewUserService(userRepository *repositories.UserRepository) *UserService {
-	return &UserService{UserRepository: userRepository}
+	return &UserService{
+		UserRepository: userRepository,
+		jwtSecret:      os.Getenv("JWT_SECRET"), // Carrega a chave secreta de uma variável de ambiente
+	}
 }
 
 func (s *UserService) GetAllUsers() ([]models.User, error) {
@@ -52,4 +60,28 @@ func (s *UserService) UpdateUser(id string, user *models.User) error {
 
 func (s *UserService) DeleteUser(id string) error {
 	return s.UserRepository.Delete(id)
+}
+
+func (s *UserService) Authenticate(identifier, password string) (string, error) {
+	user, err := s.UserRepository.FindByUsernameOrEmail(identifier)
+	if err != nil {
+		return "", ErrInvalidCredentials
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
+		return "", ErrInvalidCredentials
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"user_id": user.ID,
+		"exp":     time.Now().Add(time.Hour * 72).Unix(),
+	})
+
+	tokenString, err := token.SignedString([]byte(s.jwtSecret))
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
 }
