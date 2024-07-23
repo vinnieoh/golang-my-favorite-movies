@@ -12,7 +12,6 @@ type User struct {
     Username  string    `gorm:"type:varchar(255);not null;uniqueIndex"`
     Email     string    `gorm:"type:varchar(255);not null;uniqueIndex"`
     Password  string    `gorm:"type:varchar(255);not null"`
-    Comments  []Comment `gorm:"foreignKey:UserID"`
     Movies    []Movie   `gorm:"foreignKey:UserID"`
     TVShows   []TVShow  `gorm:"foreignKey:UserID"`
 }
