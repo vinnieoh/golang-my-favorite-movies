@@ -26,21 +26,21 @@ services:
     volumes:
       - redisdata:/data
 
-  api:
-    build:
-      dockerfile: ./docker/api.Dockerfile
-      context: .
-    image: vinnieoh/api_movie
-    container_name: api_movie
-    ports: 
-      - "8080:8080"
-    networks: 
-      - nwmovie
-    depends_on:
-      - pg
-      - redis
-    env_file:
-      - ./dotenv_files/.env
+  # api:
+  #   build:
+  #     dockerfile: ./docker/api.Dockerfile
+  #     context: .
+  #   image: vinnieoh/api_movie
+  #   container_name: api_movie
+  #   ports: 
+  #     - "8080:8080"
+  #   networks: 
+  #     - nwmovie
+  #   depends_on:
+  #     - pg
+  #     - redis
+  #   env_file:
+  #     - ./dotenv_files/.env
 
 networks: 
   nwmovie:

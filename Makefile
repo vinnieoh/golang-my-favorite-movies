@@ -16,6 +16,12 @@ build:
 test:
 	go test ./...
 
+# Gerar relatório de cobertura
+coverage:
+	go test ./... -coverprofile=coverage.out
+	go tool cover -html=coverage.out -o coverage.html
+
 # Limpar binários compilados
 clean:
 	rm -rf bin/$(APP_NAME)
+

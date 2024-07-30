@@ -8,6 +8,10 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
+# Coverage files
+coverage.out
+coverage.html
+
 # Temporary files
 *.log
 *.tmp
